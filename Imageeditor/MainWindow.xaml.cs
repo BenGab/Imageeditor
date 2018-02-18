@@ -1,20 +1,7 @@
 ﻿using Imageeditor.Extensions;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Imageeditor
 {
@@ -23,7 +10,8 @@ namespace Imageeditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string dialogFilter = "Image files (*.png;*.jpeg)|*.png;*.jpeg";
+        private const string dialogFilter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg";
+        private Bitmap bitmap = null;
 
         public MainWindow()
         {
@@ -38,9 +26,26 @@ namespace Imageeditor
             var dlgResult = dlg.ShowDialog(this);
             if(dlgResult.HasValue && dlgResult.Value)
             {
-                Bitmap img = new Bitmap(dlg.FileName);
-                ImageView.Source = img.ToBitmapSource();
+                bitmap = new Bitmap(dlg.FileName);
+                ImageView.Source = bitmap.ToBitmapSource();
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var bmp = Processing.Processing.ConverToGray(bitmap);
+            ImageView.Source = bmp.ToBitmapSource();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var bmp = Processing.Processing.ConvertToNegative(bitmap);
+            ImageView.Source = bmp.ToBitmapSource();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            ImageView.Source = bitmap.ToBitmapSource();
         }
     }
 }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Imageeditor"
+        xmlns:behav="clr-namespace:Imageeditor.Behaviors"
         mc:Ignorable="d"
         Title="Image Editor" Height="768" Width="1024"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -32,11 +33,11 @@
             <StackPanel Orientation="Vertical" x:Name="RGBAdjust">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Brightness" />
-                    <Slider Minimum="0" Maximum="255" x:Name="BrightNesSlider" Width="500" />
+                    <Slider Minimum="0" Maximum="255" x:Name="BrightNesSlider" Width="500" Value="{Binding BrightNessValue}" behav:SliderBehavior.ValueChanged="{Binding BrightNessCommand}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Contrast" />
-                    <Slider Minimum="0" Maximum="255" Width="500" x:Name="ContrastSlider" />
+                    <Slider Minimum="0" Maximum="255" Width="500" x:Name="ContrastSlider" Value="{Binding ContrastValue, Mode=TwoWay}" behav:SliderBehavior.ValueChanged="{Binding ContrastCommand}" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">

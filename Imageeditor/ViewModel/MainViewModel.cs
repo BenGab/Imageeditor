@@ -24,10 +24,14 @@ namespace Imageeditor.ViewModel
     {
         private readonly IDialogService _dialogService;
         private readonly IImageProcessing _imageProcessing; 
+
         private RelayCommand _openFileCommand;
         private RelayCommand _originalCommand;
         private RelayCommand _grayscaleCommand;
         private RelayCommand _negativeScaleCommand;
+        private RelayCommand _brightNessCommand;
+        private RelayCommand _contrastCommand;
+
         private Bitmap _original = null;
         private Bitmap _bitmapClone = null;
 
@@ -39,6 +43,30 @@ namespace Imageeditor.ViewModel
             set
             {
                 _imagesource = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private double _brightNessValue;
+
+        public double BrightNessValue
+        {
+            get { return _brightNessValue; }
+            set
+            {
+                _brightNessValue = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private double _contrastValue;
+
+        public double ContrastValue
+        {
+            get { return _contrastValue; }
+            set
+            {
+                _contrastValue = value;
                 RaisePropertyChanged();
             }
         }
@@ -61,10 +89,16 @@ namespace Imageeditor.ViewModel
 
             _dialogService = dialogService;
             _imageProcessing = imageProcessing;
+
+            _brightNessValue = 0;
+            _contrastValue = 0.0;
+
             _openFileCommand = new RelayCommand(OpenFile);
             _originalCommand = new RelayCommand(BackToOriginal);
             _grayscaleCommand = new RelayCommand(GrayScale);
             _negativeScaleCommand = new RelayCommand(NegativeScale);
+            _brightNessCommand = new RelayCommand(BrightNess);
+            _contrastCommand = new RelayCommand(Contrast);
         }
 
         public RelayCommand OpenFileCommand
@@ -91,6 +125,16 @@ namespace Imageeditor.ViewModel
             set { _negativeScaleCommand = value; }
         }
 
+        public RelayCommand BrightNessCommand
+        {
+            get { return _brightNessCommand; }
+        }
+
+        public RelayCommand ContrastCommand
+        {
+            get { return _contrastCommand; }
+        }
+
 
         private void OpenFile()
         {
@@ -115,6 +159,18 @@ namespace Imageeditor.ViewModel
         private void NegativeScale()
         {
             _imageProcessing.ConvertToNegative(_bitmapClone);
+            ImageSource = _bitmapClone.ToBitmapSource();
+        }
+
+        private void BrightNess()
+        {
+            _imageProcessing.AdjustBrightness(_bitmapClone, (int)_brightNessValue);
+            ImageSource = _bitmapClone.ToBitmapSource();
+        }
+
+        private void Contrast()
+        {
+            _imageProcessing.AdjustContrast(_bitmapClone, _contrastValue);
             ImageSource = _bitmapClone.ToBitmapSource();
         }
     }

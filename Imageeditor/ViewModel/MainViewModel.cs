@@ -1,6 +1,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Imageditor.Contracts.Dialog;
+using Imageditor.Contracts.Processing;
 using Imageeditor.Extensions;
 using System.Drawing;
 using System.Windows.Media.Imaging;
@@ -22,7 +23,9 @@ namespace Imageeditor.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly IDialogService _dialogService;
+        private readonly IImageProcessing _imageProcessing; 
         private RelayCommand _openFileCommand;
+        private RelayCommand _originalCommand;
         private Bitmap _original = null;
         private Bitmap _bitmapClone = null;
 
@@ -43,7 +46,7 @@ namespace Imageeditor.ViewModel
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// 
-        public MainViewModel(IDialogService dialogService)
+        public MainViewModel(IDialogService dialogService, IImageProcessing imageProcessing)
         {
             ////if (IsInDesignMode)
             ////{
@@ -55,7 +58,10 @@ namespace Imageeditor.ViewModel
             ////}
 
             _dialogService = dialogService;
+            _imageProcessing = imageProcessing;
             _openFileCommand = new RelayCommand(OpenFile);
+            _originalCommand = new RelayCommand(BackToOriginal);
+            _grayscaleCommand = new RelayCommand(GrayScale);
         }
 
         public RelayCommand OpenFileCommand
@@ -66,11 +72,37 @@ namespace Imageeditor.ViewModel
             }
         }
 
+        public RelayCommand OriginalCommand
+        {
+            get { return _originalCommand; }
+        }
+
+
+        private RelayCommand _grayscaleCommand;
+
+        public RelayCommand GrayScaleCommand
+        {
+            get { return _grayscaleCommand; }
+        }
+
+
         private void OpenFile()
         {
             var filePath = _dialogService.OpenFile();
             _original = new Bitmap(filePath);
             _bitmapClone = (Bitmap)_original.Clone();
+            ImageSource = _bitmapClone.ToBitmapSource();
+        }
+
+        private void BackToOriginal()
+        {
+            _bitmapClone = (Bitmap)_original.Clone();
+            ImageSource = _bitmapClone.ToBitmapSource();
+        }
+
+        private void GrayScale()
+        {
+            _imageProcessing.ConverToGray(_bitmapClone);
             ImageSource = _bitmapClone.ToBitmapSource();
         }
     }

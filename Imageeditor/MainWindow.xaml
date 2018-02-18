@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Imageeditor"
+        xmlns:behav="clr-namespace:Imageeditor.Behaviors"
         mc:Ignorable="d"
-        Title="Image Editor" Height="768" Width="1024">
+        Title="Image Editor" Height="768" Width="1024"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid x:Name="MainLayout">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*" />
@@ -16,11 +18,11 @@
                 <ColumnDefinition Width="5*" />
                 <ColumnDefinition Width=".8*" />
             </Grid.ColumnDefinitions>
-            <Image x:Name="ImageView"  />
+            <Image x:Name="ImageView" Source="{Binding ImageSource}" />
             <StackPanel Orientation="Vertical" Grid.Column="1">
-                <Button  Height="35" Content="Original" Margin="0 0 0 5" Click="Button_Click_2" />
-                <Button  Height="35" Content="GrayScale" Margin="0 0 0 5" Click="Button_Click" />
-                <Button  Height="35" Content="Negative" Margin="0 0 0 5" Click="Button_Click_1" />
+                <Button  Height="35" Content="Original" Margin="0 0 0 5" Command="{Binding OriginalCommand}" />
+                <Button  Height="35" Content="GrayScale" Margin="0 0 0 5" Command="{Binding GrayScaleCommand}" />
+                <Button  Height="35" Content="Negative" Margin="0 0 0 5" Command="{Binding NegativeScaleCommand}" />
             </StackPanel>
         </Grid>
         <Grid x:Name="EditorLayout" Grid.Row="1">
@@ -31,15 +33,15 @@
             <StackPanel Orientation="Vertical" x:Name="RGBAdjust">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Brightness" />
-                    <Slider Minimum="0" Maximum="255" x:Name="BrightNesSlider" Width="500" ValueChanged="BrightNesSlider_ValueChanged" />
+                    <Slider Minimum="0" Maximum="255" x:Name="BrightNesSlider" Width="500" Value="{Binding BrightNessValue}" behav:SliderBehavior.ValueChanged="{Binding BrightNessCommand}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Contrast" />
-                    <Slider Minimum="0" Maximum="255" Width="500" x:Name="ContrastSlider" ValueChanged="ContrastSlider_ValueChanged" />
+                    <Slider Minimum="0" Maximum="255" Width="500" x:Name="ContrastSlider" Value="{Binding ContrastValue, Mode=TwoWay}" behav:SliderBehavior.ValueChanged="{Binding ContrastCommand}" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" Click="btnOpen_Click" />
+                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" Command="{Binding OpenFileCommand}" />
             </StackPanel>
         </Grid>
     </Grid>

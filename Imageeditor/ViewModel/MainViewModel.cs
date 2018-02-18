@@ -23,7 +23,7 @@ namespace Imageeditor.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly IDialogService _dialogService;
-        private readonly IImageProcessing _imageProcessing; 
+        private readonly IImageProcessing _imageProcessing;
 
         private RelayCommand _openFileCommand;
         private RelayCommand _originalCommand;
@@ -93,12 +93,7 @@ namespace Imageeditor.ViewModel
             _brightNessValue = 0;
             _contrastValue = 0.0;
 
-            _openFileCommand = new RelayCommand(OpenFile);
-            _originalCommand = new RelayCommand(BackToOriginal);
-            _grayscaleCommand = new RelayCommand(GrayScale);
-            _negativeScaleCommand = new RelayCommand(NegativeScale);
-            _brightNessCommand = new RelayCommand(BrightNess);
-            _contrastCommand = new RelayCommand(Contrast);
+            InitCommands();
         }
 
         public RelayCommand OpenFileCommand
@@ -172,6 +167,16 @@ namespace Imageeditor.ViewModel
         {
             _imageProcessing.AdjustContrast(_bitmapClone, _contrastValue);
             ImageSource = _bitmapClone.ToBitmapSource();
+        }
+
+        private void InitCommands()
+        {
+            _openFileCommand = new RelayCommand(OpenFile);
+            _originalCommand = new RelayCommand(BackToOriginal);
+            _grayscaleCommand = new RelayCommand(GrayScale);
+            _negativeScaleCommand = new RelayCommand(NegativeScale);
+            _brightNessCommand = new RelayCommand(BrightNess);
+            _contrastCommand = new RelayCommand(Contrast);
         }
     }
 }

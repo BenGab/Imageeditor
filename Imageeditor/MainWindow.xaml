@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Imageeditor"
         mc:Ignorable="d"
-        Title="Image Editor" Height="768" Width="1024">
+        Title="Image Editor" Height="768" Width="1024"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid x:Name="MainLayout">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*" />
@@ -16,7 +17,7 @@
                 <ColumnDefinition Width="5*" />
                 <ColumnDefinition Width=".8*" />
             </Grid.ColumnDefinitions>
-            <Image x:Name="ImageView"  />
+            <Image x:Name="ImageView" Source="{Binding ImageSource}" />
             <StackPanel Orientation="Vertical" Grid.Column="1">
                 <Button  Height="35" Content="Original" Margin="0 0 0 5" Click="Button_Click_2" />
                 <Button  Height="35" Content="GrayScale" Margin="0 0 0 5" Click="Button_Click" />
@@ -39,7 +40,7 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" Click="btnOpen_Click" />
+                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" Command="{Binding OpenFileCommand}" />
             </StackPanel>
         </Grid>
     </Grid>

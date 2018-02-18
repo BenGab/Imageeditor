@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imageeditor", "Imageeditor\Imageeditor.csproj", "{E8ACA913-4CE4-4DFE-85CF-53E89CA45778}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imageditor.Contracts", "Imageditor.Contracts\Imageditor.Contracts.csproj", "{21C14B96-7E67-4E58-8C56-B62F602A66A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imageeditor.Services", "Imageeditor.Services\Imageeditor.Services.csproj", "{0FA35177-0457-4495-A093-87A13ED83587}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{E8ACA913-4CE4-4DFE-85CF-53E89CA45778}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8ACA913-4CE4-4DFE-85CF-53E89CA45778}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8ACA913-4CE4-4DFE-85CF-53E89CA45778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21C14B96-7E67-4E58-8C56-B62F602A66A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21C14B96-7E67-4E58-8C56-B62F602A66A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21C14B96-7E67-4E58-8C56-B62F602A66A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21C14B96-7E67-4E58-8C56-B62F602A66A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FA35177-0457-4495-A093-87A13ED83587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FA35177-0457-4495-A093-87A13ED83587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FA35177-0457-4495-A093-87A13ED83587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FA35177-0457-4495-A093-87A13ED83587}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

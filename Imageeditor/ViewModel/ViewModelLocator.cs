@@ -15,7 +15,9 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using Imageditor.Contracts.Dialog;
+using Imageditor.Contracts.Processing;
 using Imageeditor.Services.Dialog;
+using Imageeditor.Services.Processing;
 
 namespace Imageeditor.ViewModel
 {
@@ -43,6 +45,7 @@ namespace Imageeditor.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
             SimpleIoc.Default.Register<IDialogService, DialogService>();
+            SimpleIoc.Default.Register<IImageProcessing, ImageProcessing>();
             SimpleIoc.Default.Register<MainViewModel>();
         }
 

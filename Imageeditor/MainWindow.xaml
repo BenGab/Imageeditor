@@ -19,9 +19,9 @@
             </Grid.ColumnDefinitions>
             <Image x:Name="ImageView" Source="{Binding ImageSource}" />
             <StackPanel Orientation="Vertical" Grid.Column="1">
-                <Button  Height="35" Content="Original" Margin="0 0 0 5" Click="Button_Click_2" />
-                <Button  Height="35" Content="GrayScale" Margin="0 0 0 5" Click="Button_Click" />
-                <Button  Height="35" Content="Negative" Margin="0 0 0 5" Click="Button_Click_1" />
+                <Button  Height="35" Content="Original" Margin="0 0 0 5" />
+                <Button  Height="35" Content="GrayScale" Margin="0 0 0 5" />
+                <Button  Height="35" Content="Negative" Margin="0 0 0 5" />
             </StackPanel>
         </Grid>
         <Grid x:Name="EditorLayout" Grid.Row="1">
@@ -32,15 +32,15 @@
             <StackPanel Orientation="Vertical" x:Name="RGBAdjust">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Brightness" />
-                    <Slider Minimum="0" Maximum="255" x:Name="BrightNesSlider" Width="500" ValueChanged="BrightNesSlider_ValueChanged" />
+                    <Slider Minimum="0" Maximum="255" x:Name="BrightNesSlider" Width="500" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Contrast" />
-                    <Slider Minimum="0" Maximum="255" Width="500" x:Name="ContrastSlider" ValueChanged="ContrastSlider_ValueChanged" />
+                    <Slider Minimum="0" Maximum="255" Width="500" x:Name="ContrastSlider" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" Command="{Binding OpenFileCommand}" />
+                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" />
             </StackPanel>
         </Grid>
     </Grid>

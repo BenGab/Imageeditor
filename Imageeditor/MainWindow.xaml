@@ -30,21 +30,16 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" x:Name="RGBAdjust">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="R" />
-                    <Slider Minimum="0" Maximum="255" x:Name="RedSlider" Width="500" />
+                    <Label Content="Brightness" />
+                    <Slider Minimum="0" Maximum="255" x:Name="BrightNesSlider" Width="500" ValueChanged="BrightNesSlider_ValueChanged" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="G" />
-                    <Slider Minimum="0" Maximum="255" Width="500" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="B" />
-                    <Slider Minimum="0" Maximum="255" Width="500" />
+                    <Label Content="Contrast" />
+                    <Slider Minimum="0" Maximum="255" Width="500" x:Name="ContrastSlider" ValueChanged="ContrastSlider_ValueChanged" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" Click="btnOpen_Click" />
-                <Button Width="90" Height="35" Content="Change" x:Name="btnChange" />
             </StackPanel>
         </Grid>
     </Grid>

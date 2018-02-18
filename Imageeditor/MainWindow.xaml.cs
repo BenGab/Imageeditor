@@ -47,5 +47,17 @@ namespace Imageeditor
         {
             ImageView.Source = bitmap.ToBitmapSource();
         }
+
+        private void BrightNesSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var bmp = Processing.Processing.AdjustBrightness(bitmap, (int)BrightNesSlider.Value);
+            ImageView.Source = bmp.ToBitmapSource();
+        }
+
+        private void ContrastSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var bmp = Processing.Processing.AdjustContrast(bitmap, ContrastSlider.Value);
+            ImageView.Source = bmp.ToBitmapSource();
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using Imageeditor.Extensions;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,8 +38,8 @@ namespace Imageeditor
             var dlgResult = dlg.ShowDialog(this);
             if(dlgResult.HasValue && dlgResult.Value)
             {
-                BitmapImage img = new BitmapImage(new Uri(dlg.FileName));
-                ImageView.Source = img;
+                Bitmap img = new Bitmap(dlg.FileName);
+                ImageView.Source = img.ToBitmapSource();
             }
         }
     }

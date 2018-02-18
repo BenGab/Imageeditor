@@ -26,6 +26,8 @@ namespace Imageeditor.ViewModel
         private readonly IImageProcessing _imageProcessing; 
         private RelayCommand _openFileCommand;
         private RelayCommand _originalCommand;
+        private RelayCommand _grayscaleCommand;
+        private RelayCommand _negativeScaleCommand;
         private Bitmap _original = null;
         private Bitmap _bitmapClone = null;
 
@@ -62,6 +64,7 @@ namespace Imageeditor.ViewModel
             _openFileCommand = new RelayCommand(OpenFile);
             _originalCommand = new RelayCommand(BackToOriginal);
             _grayscaleCommand = new RelayCommand(GrayScale);
+            _negativeScaleCommand = new RelayCommand(NegativeScale);
         }
 
         public RelayCommand OpenFileCommand
@@ -77,12 +80,15 @@ namespace Imageeditor.ViewModel
             get { return _originalCommand; }
         }
 
-
-        private RelayCommand _grayscaleCommand;
-
         public RelayCommand GrayScaleCommand
         {
             get { return _grayscaleCommand; }
+        }
+
+        public RelayCommand NegativeScaleCommand
+        {
+            get { return _negativeScaleCommand; }
+            set { _negativeScaleCommand = value; }
         }
 
 
@@ -103,6 +109,12 @@ namespace Imageeditor.ViewModel
         private void GrayScale()
         {
             _imageProcessing.ConverToGray(_bitmapClone);
+            ImageSource = _bitmapClone.ToBitmapSource();
+        }
+
+        private void NegativeScale()
+        {
+            _imageProcessing.ConvertToNegative(_bitmapClone);
             ImageSource = _bitmapClone.ToBitmapSource();
         }
     }

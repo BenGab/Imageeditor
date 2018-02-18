@@ -21,7 +21,7 @@
             <StackPanel Orientation="Vertical" Grid.Column="1">
                 <Button  Height="35" Content="Original" Margin="0 0 0 5" Command="{Binding OriginalCommand}" />
                 <Button  Height="35" Content="GrayScale" Margin="0 0 0 5" Command="{Binding GrayScaleCommand}" />
-                <Button  Height="35" Content="Negative" Margin="0 0 0 5" />
+                <Button  Height="35" Content="Negative" Margin="0 0 0 5" Command="{Binding NegativeScaleCommand}" />
             </StackPanel>
         </Grid>
         <Grid x:Name="EditorLayout" Grid.Row="1">

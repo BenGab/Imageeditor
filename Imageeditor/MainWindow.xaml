@@ -47,7 +47,7 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" />
+                <Button Width="90" Height="35" Content="Open" x:Name="btnOpen" Margin="0 0 5 0" Click="btnOpen_Click" />
                 <Button Width="90" Height="35" Content="Change" x:Name="btnChange" />
             </StackPanel>
         </Grid>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,24 @@ namespace Imageeditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string dialogFilter = "Image files (*.png;*.jpeg)|*.png;*.jpeg";
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Multiselect = false;
+            dlg.Filter = dialogFilter;
+            var dlgResult = dlg.ShowDialog(this);
+            if(dlgResult.HasValue && dlgResult.Value)
+            {
+                BitmapImage img = new BitmapImage(new Uri(dlg.FileName));
+                ImageView.Source = img;
+            }
         }
     }
 }

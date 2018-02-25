@@ -1,15 +1,11 @@
-﻿using System.Drawing;
+﻿using Imageditor.Contracts.Maybe;
+using System;
+using System.Drawing;
 
 namespace Imageditor.Contracts.Processing
 {
     public interface IImageProcessing
     {
-        void ConverToGray(Bitmap bitmap);
-
-        void ConvertToNegative(Bitmap bitmap);
-
-        void AdjustBrightness(Bitmap bitmap, int brightness);
-
-        void AdjustContrast(Bitmap bitmap, double contrast);
+        void AdjustImage<T>(Bitmap bitmap, IMaybe<T> value, Action<Bitmap, int, int, IMaybe<T>> converterFunction);
     }
 }

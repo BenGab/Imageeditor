@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdjustProvider.cs" />
     <Compile Include="Dialog\DialogService.cs" />
     <Compile Include="Processing\ImageProcessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -41,7 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdjustType.cs" />
     <Compile Include="Dialog\IDialogService.cs" />
+    <Compile Include="IAdjustProvider.cs" />
+    <Compile Include="Maybe\IMaybe.cs" />
+    <Compile Include="Maybe\Just.cs" />
+    <Compile Include="Maybe\MaybeExtensions.cs" />
+    <Compile Include="Maybe\None.cs" />
     <Compile Include="Processing\IImageProcessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,8 +1,11 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Imageditor.Contracts;
 using Imageditor.Contracts.Dialog;
+using Imageditor.Contracts.Maybe;
 using Imageditor.Contracts.Processing;
 using Imageeditor.Extensions;
+using System;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 
@@ -24,6 +27,10 @@ namespace Imageeditor.ViewModel
     {
         private readonly IDialogService _dialogService;
         private readonly IImageProcessing _imageProcessing;
+        private readonly Action<Bitmap, int, int, IMaybe<int>> _brightnessFunction;
+        private readonly Action<Bitmap, int, int, IMaybe<double>> _contrastFunction;
+        private readonly Action<Bitmap, int, int, IMaybe<object>> _grayscaleFunction;
+        private readonly Action<Bitmap, int, int, IMaybe<object>> _negativescaleFunction;
 
         private RelayCommand _openFileCommand;
         private RelayCommand _originalCommand;
@@ -76,19 +83,14 @@ namespace Imageeditor.ViewModel
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// 
-        public MainViewModel(IDialogService dialogService, IImageProcessing imageProcessing)
+        public MainViewModel(IDialogService dialogService, IImageProcessing imageProcessing, IAdjustProvider adjustProvider)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
-
             _dialogService = dialogService;
             _imageProcessing = imageProcessing;
+            _contrastFunction = adjustProvider.CreateAdjustFunction<double>(AdjustType.Contrast);
+            _brightnessFunction = adjustProvider.CreateAdjustFunction<int>(AdjustType.Brightness);
+            _grayscaleFunction = adjustProvider.CreateAdjustFunction<object>(AdjustType.GrayScale);
+            _negativescaleFunction = adjustProvider.CreateAdjustFunction<object>(AdjustType.NegativeScale);
 
             _brightNessValue = 0;
             _contrastValue = 0.0;
@@ -147,25 +149,34 @@ namespace Imageeditor.ViewModel
 
         private void GrayScale()
         {
-            _imageProcessing.ConverToGray(_bitmapClone);
+            _imageProcessing.AdjustImage(_bitmapClone, new None<object>(), _grayscaleFunction);
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
         private void NegativeScale()
         {
-            _imageProcessing.ConvertToNegative(_bitmapClone);
+            _imageProcessing.AdjustImage(_bitmapClone, new None<object>(), _negativescaleFunction);
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
         private void BrightNess()
         {
-            _imageProcessing.AdjustBrightness(_bitmapClone, (int)_brightNessValue);
+            int brightness = (int)_brightNessValue;
+            if (brightness < -255) brightness = -255;
+            if (brightness > 255) brightness = 255;
+            _imageProcessing.AdjustImage(_bitmapClone, brightness.ToMaybe(), _brightnessFunction);
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
         private void Contrast()
         {
-            _imageProcessing.AdjustContrast(_bitmapClone, _contrastValue);
+            double contrast = _contrastValue;
+            if (contrast < -100) contrast = -100;
+            if (contrast > 100) contrast = 100;
+            contrast = (100.0 + contrast) / 100.0;
+            contrast *= contrast;
+
+            _imageProcessing.AdjustImage(_bitmapClone, contrast.ToMaybe(), _contrastFunction);
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 

@@ -29,10 +29,10 @@ namespace Imageeditor.ViewModel
         private readonly IDialogService _dialogService;
         private readonly IImageProcessing _imageProcessing;
         private readonly ILockBitmapFactory _lockbitmapFactory;
-        private readonly Action<Bitmap, int, int, IMaybe<int>> _brightnessFunction;
-        private readonly Action<Bitmap, int, int, IMaybe<double>> _contrastFunction;
-        private readonly Action<Bitmap, int, int, IMaybe<object>> _grayscaleFunction;
-        private readonly Action<Bitmap, int, int, IMaybe<object>> _negativescaleFunction;
+        private readonly Action<ILockBitmap, int, int, IMaybe<int>> _brightnessFunction;
+        private readonly Action<ILockBitmap, int, int, IMaybe<double>> _contrastFunction;
+        private readonly Action<ILockBitmap, int, int, IMaybe<object>> _grayscaleFunction;
+        private readonly Action<ILockBitmap, int, int, IMaybe<object>> _negativescaleFunction;
 
         private RelayCommand _openFileCommand;
         private RelayCommand _originalCommand;
@@ -152,13 +152,19 @@ namespace Imageeditor.ViewModel
 
         private void GrayScale()
         {
-            _imageProcessing.AdjustImage(_bitmapClone, new None<object>(), _grayscaleFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, new None<object>(), _grayscaleFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
         private void NegativeScale()
         {
-            _imageProcessing.AdjustImage(_bitmapClone, new None<object>(), _negativescaleFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, new None<object>(), _negativescaleFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
@@ -167,7 +173,10 @@ namespace Imageeditor.ViewModel
             int brightness = (int)_brightNessValue;
             if (brightness < -255) brightness = -255;
             if (brightness > 255) brightness = 255;
-            _imageProcessing.AdjustImage(_bitmapClone, brightness.ToMaybe(), _brightnessFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, brightness.ToMaybe(), _brightnessFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
@@ -178,8 +187,10 @@ namespace Imageeditor.ViewModel
             if (contrast > 100) contrast = 100;
             contrast = (100.0 + contrast) / 100.0;
             contrast *= contrast;
-
-            _imageProcessing.AdjustImage(_bitmapClone, contrast.ToMaybe(), _contrastFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, contrast.ToMaybe(), _contrastFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 

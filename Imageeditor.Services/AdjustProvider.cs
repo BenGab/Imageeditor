@@ -2,29 +2,30 @@
 using System;
 using Imageditor.Contracts.Maybe;
 using System.Drawing;
+using Imageditor.Contracts.Lockbits;
 
 namespace Imageeditor.Services
 {
     public class AdjustProvider : IAdjustProvider
     {
-        public Action<Bitmap, int, int, IMaybe<T>> CreateAdjustFunction<T>(AdjustType type)
+        public Action<ILockBitmap, int, int, IMaybe<T>> CreateAdjustFunction<T>(AdjustType type)
         {
             switch (type)
             {
                 case AdjustType.Brightness:
-                    return (Action<Bitmap, int, int, IMaybe<T>>)(new Action<Bitmap, int, int, IMaybe<int>>(AdjustBrightness));
+                    return (Action<ILockBitmap, int, int, IMaybe<T>>)(new Action<ILockBitmap, int, int, IMaybe<int>>(AdjustBrightness));
                 case AdjustType.Contrast:
-                    return (Action<Bitmap, int, int, IMaybe<T>>)(new Action<Bitmap, int, int, IMaybe<double>>(AdjustContrast));
+                    return (Action<ILockBitmap, int, int, IMaybe<T>>)(new Action<ILockBitmap, int, int, IMaybe<double>>(AdjustContrast));
                 case AdjustType.GrayScale:
-                    return (Action<Bitmap, int, int, IMaybe<T>>)(new Action<Bitmap, int, int, IMaybe<object>>(ConverToGray));
+                    return (Action<ILockBitmap, int, int, IMaybe<T>>)(new Action<ILockBitmap, int, int, IMaybe<object>>(ConverToGray));
                 case AdjustType.NegativeScale:
-                    return (Action<Bitmap, int, int, IMaybe<T>>)(new Action<Bitmap, int, int, IMaybe<object>>(ConvertToNegative));
+                    return (Action<ILockBitmap, int, int, IMaybe<T>>)(new Action<ILockBitmap, int, int, IMaybe<object>>(ConvertToNegative));
                 default:
                     throw new NotSupportedException();
             }
         }
 
-        private void AdjustBrightness(Bitmap bitmap, int i, int j, IMaybe<int> brightness)
+        private void AdjustBrightness(ILockBitmap bitmap, int i, int j, IMaybe<int> brightness)
         {
             Color c;
             c = bitmap.GetPixel(i, j);
@@ -45,7 +46,7 @@ namespace Imageeditor.Services
             Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
         }
 
-        private void AdjustContrast(Bitmap bitmap, int i, int j, IMaybe<double> contrast)
+        private void AdjustContrast(ILockBitmap bitmap, int i, int j, IMaybe<double> contrast)
         {
             //if (contrast < -100) contrast = -100;
             //if (contrast > 100) contrast = 100;
@@ -81,14 +82,14 @@ namespace Imageeditor.Services
             bitmap.SetPixel(i, j, Color.FromArgb((byte)pR, (byte)pG, (byte)pB));
         }
 
-        private void ConverToGray(Bitmap bitmap, int i, int j, IMaybe<object> value)
+        private void ConverToGray(ILockBitmap bitmap, int i, int j, IMaybe<object> value)
         {
             Color colorPixel = bitmap.GetPixel(i, j);
             int grayScale = (int)((colorPixel.R * 0.3) + (colorPixel.G * 0.59) + (colorPixel.B * 0.11));
             bitmap.SetPixel(i, j, Color.FromArgb(grayScale, grayScale, grayScale));
         }
 
-        public void ConvertToNegative(Bitmap bitmap, int i, int j, IMaybe<object> value)
+        public void ConvertToNegative(ILockBitmap bitmap, int i, int j, IMaybe<object> value)
         {
             Color colorPixel = bitmap.GetPixel(i, j);
             bitmap.SetPixel(i, j, Color.FromArgb(255 - colorPixel.R, 255 - colorPixel.G, 255 - colorPixel.G));

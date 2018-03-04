@@ -1,13 +1,13 @@
 ﻿using Imageditor.Contracts.Processing;
 using System;
-using System.Drawing;
 using Imageditor.Contracts.Maybe;
+using Imageditor.Contracts.Lockbits;
 
 namespace Imageeditor.Services.Processing
 {
     public class ImageProcessing : IImageProcessing
     {
-        public void AdjustImage<T>(Bitmap bitmap, IMaybe<T> value, Action<Bitmap, int, int, IMaybe<T>> converterFunction)
+        public void AdjustImage<T>(ILockBitmap bitmap, IMaybe<T> value, Action<ILockBitmap, int, int, IMaybe<T>> converterFunction)
         {
             for (int i = 0; i < bitmap.Width; i++)
             {

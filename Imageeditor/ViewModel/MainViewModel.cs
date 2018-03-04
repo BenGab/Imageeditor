@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Imageditor.Contracts;
 using Imageditor.Contracts.Dialog;
+using Imageditor.Contracts.Lockbits;
 using Imageditor.Contracts.Maybe;
 using Imageditor.Contracts.Processing;
 using Imageeditor.Extensions;
@@ -27,10 +28,11 @@ namespace Imageeditor.ViewModel
     {
         private readonly IDialogService _dialogService;
         private readonly IImageProcessing _imageProcessing;
-        private readonly Action<Bitmap, int, int, IMaybe<int>> _brightnessFunction;
-        private readonly Action<Bitmap, int, int, IMaybe<double>> _contrastFunction;
-        private readonly Action<Bitmap, int, int, IMaybe<object>> _grayscaleFunction;
-        private readonly Action<Bitmap, int, int, IMaybe<object>> _negativescaleFunction;
+        private readonly ILockBitmapFactory _lockbitmapFactory;
+        private readonly Action<ILockBitmap, int, int, IMaybe<int>> _brightnessFunction;
+        private readonly Action<ILockBitmap, int, int, IMaybe<double>> _contrastFunction;
+        private readonly Action<ILockBitmap, int, int, IMaybe<object>> _grayscaleFunction;
+        private readonly Action<ILockBitmap, int, int, IMaybe<object>> _negativescaleFunction;
 
         private RelayCommand _openFileCommand;
         private RelayCommand _originalCommand;
@@ -83,10 +85,11 @@ namespace Imageeditor.ViewModel
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// 
-        public MainViewModel(IDialogService dialogService, IImageProcessing imageProcessing, IAdjustProvider adjustProvider)
+        public MainViewModel(IDialogService dialogService, IImageProcessing imageProcessing, IAdjustProvider adjustProvider, ILockBitmapFactory lockbitmapFactory)
         {
             _dialogService = dialogService;
             _imageProcessing = imageProcessing;
+            _lockbitmapFactory = lockbitmapFactory;
             _contrastFunction = adjustProvider.CreateAdjustFunction<double>(AdjustType.Contrast);
             _brightnessFunction = adjustProvider.CreateAdjustFunction<int>(AdjustType.Brightness);
             _grayscaleFunction = adjustProvider.CreateAdjustFunction<object>(AdjustType.GrayScale);
@@ -149,13 +152,19 @@ namespace Imageeditor.ViewModel
 
         private void GrayScale()
         {
-            _imageProcessing.AdjustImage(_bitmapClone, new None<object>(), _grayscaleFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, new None<object>(), _grayscaleFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
         private void NegativeScale()
         {
-            _imageProcessing.AdjustImage(_bitmapClone, new None<object>(), _negativescaleFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, new None<object>(), _negativescaleFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
@@ -164,7 +173,10 @@ namespace Imageeditor.ViewModel
             int brightness = (int)_brightNessValue;
             if (brightness < -255) brightness = -255;
             if (brightness > 255) brightness = 255;
-            _imageProcessing.AdjustImage(_bitmapClone, brightness.ToMaybe(), _brightnessFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, brightness.ToMaybe(), _brightnessFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
@@ -175,8 +187,10 @@ namespace Imageeditor.ViewModel
             if (contrast > 100) contrast = 100;
             contrast = (100.0 + contrast) / 100.0;
             contrast *= contrast;
-
-            _imageProcessing.AdjustImage(_bitmapClone, contrast.ToMaybe(), _contrastFunction);
+            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+            bitmap.LockBits();
+            _imageProcessing.AdjustImage(bitmap, contrast.ToMaybe(), _contrastFunction);
+            bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 

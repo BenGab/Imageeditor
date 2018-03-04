@@ -16,9 +16,11 @@ using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using Imageditor.Contracts;
 using Imageditor.Contracts.Dialog;
+using Imageditor.Contracts.Lockbits;
 using Imageditor.Contracts.Processing;
 using Imageeditor.Services;
 using Imageeditor.Services.Dialog;
+using Imageeditor.Services.Lockbits;
 using Imageeditor.Services.Processing;
 
 namespace Imageeditor.ViewModel
@@ -48,6 +50,7 @@ namespace Imageeditor.ViewModel
             ////}
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IAdjustProvider, AdjustProvider>();
+            SimpleIoc.Default.Register<ILockBitmapFactory, LockBitmapFactory>();
             SimpleIoc.Default.Register<IImageProcessing, ImageProcessing>();
             SimpleIoc.Default.Register<MainViewModel>();
         }

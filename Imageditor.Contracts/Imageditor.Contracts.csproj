@@ -44,6 +44,8 @@
     <Compile Include="AdjustType.cs" />
     <Compile Include="Dialog\IDialogService.cs" />
     <Compile Include="IAdjustProvider.cs" />
+    <Compile Include="Lockbits\ILockBitmap.cs" />
+    <Compile Include="Lockbits\ILockBitmapFactory.cs" />
     <Compile Include="Maybe\IMaybe.cs" />
     <Compile Include="Maybe\Just.cs" />
     <Compile Include="Maybe\MaybeExtensions.cs" />

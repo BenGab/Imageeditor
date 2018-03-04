@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="AdjustProvider.cs" />
     <Compile Include="Dialog\DialogService.cs" />
+    <Compile Include="Lockbits\LockBitmap.cs" />
+    <Compile Include="Lockbits\LockBitmapFactory.cs" />
     <Compile Include="Processing\ImageProcessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,9 +55,7 @@
       <Name>Imageditor.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Lockbits\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

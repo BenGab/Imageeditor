@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Imageditor.Contracts;
 using Imageditor.Contracts.Dialog;
+using Imageditor.Contracts.Lockbits;
 using Imageditor.Contracts.Maybe;
 using Imageditor.Contracts.Processing;
 using Imageeditor.Extensions;
@@ -27,6 +28,7 @@ namespace Imageeditor.ViewModel
     {
         private readonly IDialogService _dialogService;
         private readonly IImageProcessing _imageProcessing;
+        private readonly ILockBitmapFactory _lockbitmapFactory;
         private readonly Action<Bitmap, int, int, IMaybe<int>> _brightnessFunction;
         private readonly Action<Bitmap, int, int, IMaybe<double>> _contrastFunction;
         private readonly Action<Bitmap, int, int, IMaybe<object>> _grayscaleFunction;
@@ -83,10 +85,11 @@ namespace Imageeditor.ViewModel
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// 
-        public MainViewModel(IDialogService dialogService, IImageProcessing imageProcessing, IAdjustProvider adjustProvider)
+        public MainViewModel(IDialogService dialogService, IImageProcessing imageProcessing, IAdjustProvider adjustProvider, ILockBitmapFactory lockbitmapFactory)
         {
             _dialogService = dialogService;
             _imageProcessing = imageProcessing;
+            _lockbitmapFactory = lockbitmapFactory;
             _contrastFunction = adjustProvider.CreateAdjustFunction<double>(AdjustType.Contrast);
             _brightnessFunction = adjustProvider.CreateAdjustFunction<int>(AdjustType.Brightness);
             _grayscaleFunction = adjustProvider.CreateAdjustFunction<object>(AdjustType.GrayScale);

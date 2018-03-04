@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Imageditor.Contracts.Lockbits
 {
     public interface ILockBitmap
     {
+        byte[] Pixels { get; set; }
+
+        int Depth { get; }
+
+        int Width { get; }
+
+        int Height { get; }
+
         void LockBits();
 
         void UnlockBits();

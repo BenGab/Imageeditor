@@ -2,6 +2,7 @@
 using System;
 using Imageditor.Contracts.Maybe;
 using Imageditor.Contracts.Lockbits;
+using System.Threading.Tasks;
 
 namespace Imageeditor.Services.Processing
 {
@@ -9,13 +10,13 @@ namespace Imageeditor.Services.Processing
     {
         public void AdjustImage<T>(ILockBitmap bitmap, IMaybe<T> value, Action<ILockBitmap, int, int, IMaybe<T>> converterFunction)
         {
-            for (int i = 0; i < bitmap.Width; i++)
+            Parallel.For(0, bitmap.Width, (i) =>
             {
                 for (int j = 0; j < bitmap.Height; j++)
                 {
                     converterFunction(bitmap, i, j, value);
                 }
-            }
+            });
         }
     }
 }

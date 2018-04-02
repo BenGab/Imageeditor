@@ -46,6 +46,7 @@
     <Compile Include="Dialog\DialogService.cs" />
     <Compile Include="Lockbits\LockBitmap.cs" />
     <Compile Include="Lockbits\LockBitmapFactory.cs" />
+    <Compile Include="Processing\BitmapTileData.cs" />
     <Compile Include="Processing\ImageProcessing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

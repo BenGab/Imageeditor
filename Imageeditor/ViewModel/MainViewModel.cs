@@ -170,6 +170,7 @@ namespace Imageeditor.ViewModel
 
         private void BrightNess()
         {
+            _bitmapClone = (Bitmap)_original.Clone();
             int brightness = (int)_brightNessValue;
             if (brightness < -255) brightness = -255;
             if (brightness > 255) brightness = 255;
@@ -182,6 +183,7 @@ namespace Imageeditor.ViewModel
 
         private void Contrast()
         {
+            _bitmapClone = (Bitmap)_original.Clone();
             double contrast = _contrastValue;
             if (contrast < -100) contrast = -100;
             if (contrast > 100) contrast = 100;

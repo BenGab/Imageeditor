@@ -8,7 +8,9 @@ using Imageditor.Contracts.Processing;
 using Imageeditor.Extensions;
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Imageeditor.ViewModel
 {
@@ -150,25 +152,29 @@ namespace Imageeditor.ViewModel
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
-        private void GrayScale()
+        private async void GrayScale()
         {
             var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
             bitmap.LockBits();
-            _imageProcessing.AdjustImage(bitmap, new None<object>(), _grayscaleFunction);
+            await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, new None<object>(), _grayscaleFunction));
             bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
         private void NegativeScale()
         {
+            var dispatcher = Dispatcher.CurrentDispatcher;
             var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
             bitmap.LockBits();
-            _imageProcessing.AdjustImage(bitmap, new None<object>(), _negativescaleFunction);
-            bitmap.UnlockBits();
-            ImageSource = _bitmapClone.ToBitmapSource();
+            Task.WhenAll(_imageProcessing.AdjustImage(bitmap, new None<object>(), _negativescaleFunction))
+                .ContinueWith(task =>
+                {
+                    bitmap.UnlockBits();
+                   dispatcher.Invoke(() => ImageSource = _bitmapClone.ToBitmapSource());
+                });
         }
 
-        private void BrightNess()
+        private async void BrightNess()
         {
             _bitmapClone = (Bitmap)_original.Clone();
             int brightness = (int)_brightNessValue;
@@ -176,12 +182,12 @@ namespace Imageeditor.ViewModel
             if (brightness > 255) brightness = 255;
             var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
             bitmap.LockBits();
-            _imageProcessing.AdjustImage(bitmap, brightness.ToMaybe(), _brightnessFunction);
+            await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, brightness.ToMaybe(), _brightnessFunction));
             bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }
 
-        private void Contrast()
+        private async void Contrast()
         {
             _bitmapClone = (Bitmap)_original.Clone();
             double contrast = _contrastValue;
@@ -191,7 +197,7 @@ namespace Imageeditor.ViewModel
             contrast *= contrast;
             var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
             bitmap.LockBits();
-            _imageProcessing.AdjustImage(bitmap, contrast.ToMaybe(), _contrastFunction);
+            await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, contrast.ToMaybe(), _contrastFunction));
             bitmap.UnlockBits();
             ImageSource = _bitmapClone.ToBitmapSource();
         }

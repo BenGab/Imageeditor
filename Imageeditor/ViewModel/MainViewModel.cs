@@ -148,58 +148,73 @@ namespace Imageeditor.ViewModel
 
         private void BackToOriginal()
         {
-            _bitmapClone = (Bitmap)_original.Clone();
-            ImageSource = _bitmapClone.ToBitmapSource();
+            if (_original != null)
+            {
+                _bitmapClone = (Bitmap) _original.Clone();
+                ImageSource = _bitmapClone.ToBitmapSource();
+            }
         }
 
         private async void GrayScale()
         {
-            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
-            bitmap.LockBits();
-            await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, new None<object>(), _grayscaleFunction));
-            bitmap.UnlockBits();
-            ImageSource = _bitmapClone.ToBitmapSource();
+            if (_bitmapClone != null)
+            {
+                var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+                bitmap.LockBits();
+                await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, new None<object>(), _grayscaleFunction));
+                bitmap.UnlockBits();
+                ImageSource = _bitmapClone.ToBitmapSource();
+            }
         }
 
         private void NegativeScale()
         {
-            var dispatcher = Dispatcher.CurrentDispatcher;
-            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
-            bitmap.LockBits();
-            Task.WhenAll(_imageProcessing.AdjustImage(bitmap, new None<object>(), _negativescaleFunction))
-                .ContinueWith(task =>
-                {
-                    bitmap.UnlockBits();
-                   dispatcher.Invoke(() => ImageSource = _bitmapClone.ToBitmapSource());
-                });
+            if (_bitmapClone != null)
+            {
+                var dispatcher = Dispatcher.CurrentDispatcher;
+                var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+                bitmap.LockBits();
+                Task.WhenAll(_imageProcessing.AdjustImage(bitmap, new None<object>(), _negativescaleFunction))
+                    .ContinueWith(task =>
+                    {
+                        bitmap.UnlockBits();
+                        dispatcher.Invoke(() => ImageSource = _bitmapClone.ToBitmapSource());
+                    });
+            }
         }
 
         private async void BrightNess()
         {
-            _bitmapClone = (Bitmap)_original.Clone();
-            int brightness = (int)_brightNessValue;
-            if (brightness < -255) brightness = -255;
-            if (brightness > 255) brightness = 255;
-            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
-            bitmap.LockBits();
-            await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, brightness.ToMaybe(), _brightnessFunction));
-            bitmap.UnlockBits();
-            ImageSource = _bitmapClone.ToBitmapSource();
+            if (_original != null)
+            {
+                _bitmapClone = (Bitmap) _original.Clone();
+                int brightness = (int) _brightNessValue;
+                if (brightness < -255) brightness = -255;
+                if (brightness > 255) brightness = 255;
+                var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+                bitmap.LockBits();
+                await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, brightness.ToMaybe(), _brightnessFunction));
+                bitmap.UnlockBits();
+                ImageSource = _bitmapClone.ToBitmapSource();
+            }
         }
 
         private async void Contrast()
         {
-            _bitmapClone = (Bitmap)_original.Clone();
-            double contrast = _contrastValue;
-            if (contrast < -100) contrast = -100;
-            if (contrast > 100) contrast = 100;
-            contrast = (100.0 + contrast) / 100.0;
-            contrast *= contrast;
-            var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
-            bitmap.LockBits();
-            await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, contrast.ToMaybe(), _contrastFunction));
-            bitmap.UnlockBits();
-            ImageSource = _bitmapClone.ToBitmapSource();
+            if (_original != null)
+            {
+                _bitmapClone = (Bitmap) _original.Clone();
+                double contrast = _contrastValue;
+                if (contrast < -100) contrast = -100;
+                if (contrast > 100) contrast = 100;
+                contrast = (100.0 + contrast) / 100.0;
+                contrast *= contrast;
+                var bitmap = _lockbitmapFactory.CreateLockBitmap(_bitmapClone);
+                bitmap.LockBits();
+                await Task.WhenAll(_imageProcessing.AdjustImage(bitmap, contrast.ToMaybe(), _contrastFunction));
+                bitmap.UnlockBits();
+                ImageSource = _bitmapClone.ToBitmapSource();
+            }
         }
 
         private void InitCommands()
